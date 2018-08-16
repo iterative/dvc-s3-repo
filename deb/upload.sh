@@ -3,9 +3,6 @@
 set -e
 set -x
 
-sudo apt-get install jq
-sudo gem install deb-s3
-
 rm -f latest-version
 wget https://4ki8820rsf.execute-api.us-east-2.amazonaws.com/prod/latest-version
 
@@ -21,3 +18,8 @@ deb-s3 upload --bucket dvc-deb \
               --codename stable \
               --s3-region us-east-2 \
               $DEB
+
+cp dvc.list /etc/apt/sources.list.d/
+apt-get update
+apt-get install dvc
+dvc --help
