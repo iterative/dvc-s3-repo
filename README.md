@@ -1,12 +1,18 @@
 # dvc-s3-repo
 Maintain deb and rpm repositories on s3
 
-## DEB repository
+## Ubuntu, Debian
+Install dvc from dep repository:
 ```
-cp deb/dvc.list /etc/apt/sources.list.d/
+$ sudo cp deb/dvc.list /etc/apt/sources.list.d/
+$ sudo apt-get update
+$ sudo apt-get install dvc
 ```
 
-## RPM repository
+## Fedora, Centos, RHEL
+Install dvc from rpm repository:
 ```
-cp rpm/dvc.repo /etc/yum.repos.d/
+$ sudo cp rpm/dvc.repo /etc/yum.repos.d/
+$ sudo dnf update
+$ sudo dnf install dvc
 ```
