@@ -1,5 +1,5 @@
 [dvc]
 name=DVC Packages  - $basearch
-baseurl=https://s3-us-east-2.amazonaws.com/dvc-rpm/
+baseurl=https://dvc.org/rpm/
 enabled=1
 gpgcheck=0

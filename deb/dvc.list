@@ -1,1 +1,1 @@
-deb [trusted=yes] https://s3-us-east-2.amazonaws.com/dvc-deb/ stable main
+deb [trusted=yes] https://dvc.org/deb/ stable main

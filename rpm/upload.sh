@@ -20,6 +20,7 @@ wget $URL
 ./bin/rpm-s3 --bucket dvc-rpm \
              --region us-east-2 \
              --keep 100 \
+             --visibility public-read \
              $RPM
 popd
 
