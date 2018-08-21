@@ -24,6 +24,8 @@ wget $URL
              $RPM
 popd
 
+aws s3 cp dvc.repo s3://dvc-rpm/ --acl public-read
+
 cp dvc.repo /etc/yum.repos.d/
 dnf update --verbose
 dnf install -y dvc
