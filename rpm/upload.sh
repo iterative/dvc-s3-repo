@@ -9,7 +9,7 @@ git clone https://github.com/crohr/rpm-s3 --recurse-submodules
 pushd rpm-s3
 
 rm -f latest-version
-wget https://updater.dvc.org
+wget https://updater.dvc.org -O latest-version
 
 URL=$(jq -r .packages.linux.rpm latest-version)
 RPM=$(basename $URL)

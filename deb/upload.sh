@@ -4,7 +4,7 @@ set -e
 set -x
 
 rm -f latest-version
-wget https://updater.dvc.org
+wget https://updater.dvc.org -O latest-version
 
 URL=$(jq -r .packages.linux.deb latest-version)
 DEB=$(basename $URL)
