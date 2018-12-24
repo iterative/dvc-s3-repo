@@ -4,7 +4,7 @@ set -e
 set -x
 
 rm -f latest-version
-wget https://4ki8820rsf.execute-api.us-east-2.amazonaws.com/prod/latest-version
+wget https://updater.dvc.org
 
 URL=$(jq -r .packages.linux.deb latest-version)
 DEB=$(basename $URL)
