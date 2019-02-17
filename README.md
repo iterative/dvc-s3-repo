@@ -1,3 +1,4 @@
+[![Build Status](https://travis-ci.com/iterative/dvc-s3-repo.svg?branch=master)](https://travis-ci.com/iterative/dvc-s3-repo)
 # dvc-s3-repo
 Maintain deb and rpm repositories on s3
 
