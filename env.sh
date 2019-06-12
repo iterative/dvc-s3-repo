@@ -8,6 +8,7 @@ AWS_PROFILE=iterative
 
 rm -f latest-version
 wget https://updater.dvc.org -O latest-version
+cat latest-version
 
 function get_pkg {
     URL=$(jq -r .packages.linux.$1 latest-version)
