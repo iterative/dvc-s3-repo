@@ -32,7 +32,7 @@ cat > $KEYNAME.batch <<EOF
  %echo done
 EOF
 
-gpg --batch --gen-key $KEYNAME.batch
+gpg --batch --gen-key $KEYNAME.batch --passphrase 1234
 gpg --no-default-keyring --secret-keyring ${KEYNAME}.key --keyring ${KEYNAME}.pub --list-secret-keys
 gpg --import ${KEYNAME}.key
 
