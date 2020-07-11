@@ -17,6 +17,7 @@ deb-s3 upload --bucket $AWS_S3_BUCKET \
               --preserve-versions \
               --arch amd64 \
               --codename stable \
+	      --sign \
               --access-key-id $(get_conf aws_access_key_id) \
               --secret-access-key $(get_conf aws_secret_access_key) \
               --s3-region $(get_conf region) \
