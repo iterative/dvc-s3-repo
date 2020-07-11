@@ -27,12 +27,13 @@ cat > $KEYNAME.batch <<EOF
  Expire-Date: 0
  %pubring ${KEYNAME}.pub
  %secring ${KEYNAME}.key
+ Passphrase: 123456789
  # Do a commit here, so that we can later print "done" :-)
  %commit
  %echo done
 EOF
 
-gpg --batch --gen-key $KEYNAME.batch --passphrase 1234
+gpg --batch --gen-key $KEYNAME.batch
 gpg --no-default-keyring --secret-keyring ${KEYNAME}.key --keyring ${KEYNAME}.pub --list-secret-keys
 gpg --import ${KEYNAME}.key
 
