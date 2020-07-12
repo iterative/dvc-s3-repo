@@ -12,30 +12,29 @@ AWS_S3_PREFIX=deb
 
 KEYNAME=dvc-s3-repo
 EMAIL=eng@iterative.ai
+export GNUPGHOME=$(pwd)/gnupg
 
-mkdir ~/.gnupg
-echo "cert-digest-algo SHA256" >> ~/.gnupg/gpg.conf
-echo "digest-algo SHA256" >> ~/.gnupg/gpg.conf
+rm -rf $GNUPGHOME
+mkdir $GNUPGHOME
+echo "cert-digest-algo SHA256" > $GNUPGHOME/gpg.conf
+echo "digest-algo SHA256" > $GNUPGHOME/gpg.conf
 
 cat > $KEYNAME.batch <<EOF
  %echo Generating a standard key
   Key-Type: RSA
    Key-Length: 4096
     Subkey-Length: 4096
-     Name-Real: ${KEYNAME}
- Name-Email: ${EMAIL}
+     Name-Real: dvc-s3-repo
+ Name-Email: eng@iterative.ai
  Expire-Date: 0
- %pubring ${KEYNAME}.pub
- %secring ${KEYNAME}.key
- Passphrase: 123456789
+ %no-protection
  # Do a commit here, so that we can later print "done" :-)
  %commit
  %echo done
 EOF
 
 gpg --batch --gen-key $KEYNAME.batch
-gpg --no-default-keyring --secret-keyring ${KEYNAME}.key --keyring ${KEYNAME}.pub --list-secret-keys
-gpg --import ${KEYNAME}.key
+KEYID=$(gpg --list-secret-keys --with-colons | grep '^sec:' | cut --delimiter ':' --fields 5)
 
 upload_file $DEB_LIST $AWS_S3_PREFIX
 
@@ -44,7 +43,7 @@ deb-s3 upload --bucket $AWS_S3_BUCKET \
               --preserve-versions \
               --arch amd64 \
               --codename stable \
-	      --sign=$(gpg ${KEYNAME}.key) \
+              --sign=$KEYID \
               --access-key-id $(get_conf aws_access_key_id) \
               --secret-access-key $(get_conf aws_secret_access_key) \
               --s3-region $(get_conf region) \
