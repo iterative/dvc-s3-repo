@@ -1,0 +1,23 @@
+name: Deploy deb/rpm to s3 repo
+on:
+  push:
+    branches: master
+  schedule:
+    - cron: '*/5 * * * *'
+jobs:
+  update:
+    runs-on: ubuntu-16.04
+    steps:
+    - uses: actions/checkout@v2
+    - run: pip install awscli
+    - env:
+        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      run:
+      - mkdir ~/.aws
+      - echo "[profile iterative]" >> ~/.aws/config
+      - echo "region = us-east-2" >> ~/.aws/config
+      - echo "[iterative]" >> ~/.aws/credentials
+      - echo "aws_access_key_id = $AWS_ACCESS_KEY_ID" >> ~/.aws/credentials
+      - echo "aws_secret_access_key = $AWS_SECRET_ACCESS_KEY" >> ~/.aws/credentials
+      - ./deploy.sh
