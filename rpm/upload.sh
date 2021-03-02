@@ -24,6 +24,8 @@ gpg2 --no-tty --batch --passphrase-file ~/iterative.pass --pinentry-mode loopbac
 rm -rf $RPM_S3_DIR
 git clone https://github.com/crohr/rpm-s3 $RPM_S3_DIR --recurse-submodules
 
+rpm --resign $PKG
+
 export AWS_ACCESS_KEY=$(get_conf aws_access_key_id)
 export AWS_SECRET_KEY=$(get_conf aws_secret_access_key)
 $RPM_S3_DIR/bin/rpm-s3 --bucket $AWS_S3_BUCKET \
