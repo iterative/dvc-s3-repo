@@ -35,6 +35,7 @@ $RPM_S3_DIR/bin/rpm-s3 -vvv \
                        --keep 100 \
                        --visibility public-read \
                        --sign \
+                       --gpg-options="--no-tty --batch --passphrase $GPG_ITERATIVE_PASS  --pinentry-mode loopback" \
                        $PKG
 
 cp $RPM_REPO /etc/yum.repos.d/
