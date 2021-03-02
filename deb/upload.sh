@@ -10,7 +10,7 @@ PKG=$(get_pkg deb)
 DEB_LIST=$DIR/dvc.list
 AWS_S3_PREFIX=deb
 
-echo -e "$GPG_ITERATIVE_ASC" | gpg --import
+echo "$GPG_ITERATIVE_ASC" | gpg --import
 
 upload_file $DEB_LIST $AWS_S3_PREFIX
 
