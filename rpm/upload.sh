@@ -22,7 +22,7 @@ echo "$GPG_ITERATIVE_ASC" > Iterative.asc
 gpg2 --no-tty --batch --passphrase-file ~/iterative.pass --pinentry-mode loopback --import Iterative.asc
 
 rm -rf $RPM_S3_DIR
-git clone https://github.com/crohr/rpm-s3 $RPM_S3_DIR --recurse-submodules
+git clone https://github.com/efiop/rpm-s3 $RPM_S3_DIR --recurse-submodules
 
 echo "$GPG_ITERATIVE_ASC" | rpm --resign $PKG
 
