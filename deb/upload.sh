@@ -11,7 +11,7 @@ DEB_LIST=$DIR/dvc.list
 AWS_S3_PREFIX=deb
 
 echo "$GPG_ITERATIVE_ASC" > Iterative.asc
-gpg --import Iterative.asc
+gpg --import Iterative.asc --no-tty --batch --passphrase $GPG_ITERATIVE_PASS --pinentry-mode loopback
 
 upload_file $DEB_LIST $AWS_S3_PREFIX
 
@@ -21,7 +21,7 @@ deb-s3 upload --bucket $AWS_S3_BUCKET \
               --arch amd64 \
               --codename stable \
               --sign=$KEYID \
-              --gpg-options="--no-tty --batch --passphrase $GPG_ITERATIVE_PASS" \
+              --gpg-options="--no-tty --batch --passphrase $GPG_ITERATIVE_PASS  --pinentry-mode loopback" \
               --access-key-id $(get_conf aws_access_key_id) \
               --secret-access-key $(get_conf aws_secret_access_key) \
               --s3-region $(get_conf region) \
