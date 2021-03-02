@@ -13,3 +13,4 @@ if [[ -z "$@" ]]; then
     deploy fedora rpm
 else
     deploy $@
+fi
