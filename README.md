@@ -6,6 +6,7 @@ Maintain deb and rpm repositories on s3
 Install dvc from dep repository:
 ```
 $ sudo cp deb/dvc.list /etc/apt/sources.list.d/
+$ sudo apt-key add iterative.asc
 $ sudo apt-get update
 $ sudo apt-get install dvc
 ```
