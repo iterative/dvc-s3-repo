@@ -5,7 +5,7 @@ set -x
 
 function deploy {
     docker build -t dvc docker/$1
-    docker run -v ~/.aws:/root/.aws -v $(pwd):/dvc -w /dvc/$2 --rm -t dvc ./upload.sh
+    docker run -e GPG_ITERATIVE_ASC -e GPG_ITERATIVE_PASS -v ~/.aws:/root/.aws -v $(pwd):/dvc -w /dvc/$2 --rm -t dvc ./upload.sh
 }
 
 deploy ubuntu deb
