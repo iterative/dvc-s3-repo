@@ -1,4 +1,4 @@
 %_signature gpg
 %_gpg_name Iterative
 %_gpgbin /usr/bin/gpg2
-%__gpg_sign_cmd %{__gpg} gpg --no-tty --batch --passphrase-file ~/iterative.pass  --pinentry-mode loopback
+%__gpg_sign_cmd %{__gpg} gpg --no-tty --batch --passphrase-file /root/iterative.pass  --pinentry-mode loopback
