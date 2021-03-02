@@ -11,7 +11,7 @@ DEB_LIST=$DIR/dvc.list
 AWS_S3_PREFIX=deb
 
 echo "$GPG_ITERATIVE_ASC" > Iterative.asc
-gpg --import Iterative.asc --no-tty --batch --passphrase $GPG_ITERATIVE_PASS --pinentry-mode loopback
+gpg --no-tty --batch --passphrase $GPG_ITERATIVE_PASS --pinentry-mode loopback --import Iterative.asc
 
 upload_file $DEB_LIST $AWS_S3_PREFIX
 
