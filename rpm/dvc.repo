@@ -2,4 +2,4 @@
 name=DVC Packages  - $basearch
 baseurl=https://dvc.org/rpm/
 enabled=1
-gpgcheck=0
+gpgcheck=1
