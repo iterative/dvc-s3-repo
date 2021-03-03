@@ -30,7 +30,7 @@ deb-s3 upload --bucket $AWS_S3_BUCKET \
               $PKG
 
 cp $DEB_LIST /etc/apt/sources.list.d/
-sudo apt-key add $ASC
+apt-key add $ASC
 apt-get update
 apt-get install dvc
 dvc --help
