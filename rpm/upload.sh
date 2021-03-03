@@ -40,6 +40,7 @@ $RPM_S3_DIR/bin/rpm-s3 -vvv \
                        $PKG
 
 cp $RPM_REPO /etc/yum.repos.d/
+rpm --import $ASC
 dnf update --verbose
 dnf install -y dvc
 dvc --help
