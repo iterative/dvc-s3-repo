@@ -15,6 +15,7 @@ $ sudo apt-get install dvc
 Install dvc from rpm repository:
 ```
 $ sudo cp rpm/dvc.repo /etc/yum.repos.d/
+$ sudo rpm --import https://dvc.org/rpm/iterative.asc
 $ sudo dnf update
 $ sudo dnf install dvc
 ```
