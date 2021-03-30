@@ -3,19 +3,22 @@
 set -e
 set -x
 
+VERSION=2.0.13
+BASE="https://github.com/iterative/dvc/releases/download/$VERSION"
+
 AWS_S3_BUCKET=dvc-s3-repo
 AWS_PROFILE=iterative
 
-rm -f latest-version
-wget https://updater.dvc.org -O latest-version
-cat latest-version
-
 function get_pkg {
-    URL=$(jq -r .packages.linux.$1 latest-version)
-    PKG=$(basename $URL)
-    rm -f $PKG
-    wget $URL &> wget.log
-    echo $(pwd)/$PKG
+    if [ "$1" == "rpm" ]; then
+        pkg="dvc-$VERSION-1.x86_64.rpm"
+    elif [ "$2" == "deb" ]; then
+        pkg="dvc_$VERSION_amd64.deb"
+    fi
+
+    rm -f $pkg
+    wget "$BASE/$pkg" &> wget.log
+    echo $(pwd)/$pkg
 }
 
 function get_conf {

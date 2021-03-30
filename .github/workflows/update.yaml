@@ -1,0 +1,30 @@
+name: Update package
+on:
+  push:
+    branches: master
+  schedule:
+    - cron: '0 0 * * *'
+jobs:
+  update:
+    runs-on: ubuntu-16.04
+    steps:
+    - uses: actions/checkout@v2
+    - name: get latest dvc version
+      id: latest
+      shell: bash
+      run: |
+        version=$(./latest.sh)
+        echo "::set-output name=version::$version"
+    - name: try update
+      id: update
+      shell: bash
+      run: |
+        echo latest version ${{ steps.latest.outputs.version }}
+        ./update.sh ${{ steps.latest.outputs.version }}
+        echo "::set-output name=changes::$(git diff)"
+    - name: create PR
+      if: ${{ steps.update.outputs.changes != '' }}
+      uses: peter-evans/create-pull-request@v3
+      with:
+        commit-message: dvc ${{ steps.latest.outputs.version }}
+        title: dvc ${{ steps.latest.outputs.version }}

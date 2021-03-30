@@ -2,8 +2,6 @@ name: Deploy deb/rpm to s3 repo
 on:
   push:
     branches: master
-  schedule:
-    - cron: '0 */12 * * *'
 jobs:
   deb:
     runs-on: ubuntu-16.04
