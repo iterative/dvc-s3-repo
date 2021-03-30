@@ -13,7 +13,7 @@ function get_pkg {
     if [ "$1" == "rpm" ]; then
         pkg="dvc-$VERSION-1.x86_64.rpm"
     elif [ "$1" == "deb" ]; then
-        pkg="dvc_$VERSION_amd64.deb"
+        pkg="dvc_""$VERSION""_amd64.deb"
     fi
 
     rm -f $pkg
