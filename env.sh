@@ -12,7 +12,7 @@ AWS_PROFILE=iterative
 function get_pkg {
     if [ "$1" == "rpm" ]; then
         pkg="dvc-$VERSION-1.x86_64.rpm"
-    elif [ "$2" == "deb" ]; then
+    elif [ "$1" == "deb" ]; then
         pkg="dvc_$VERSION_amd64.deb"
     fi
 
