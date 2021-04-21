@@ -35,5 +35,5 @@ apt-get update
 apt-get install dvc
 dvc --help
 dvc doctor
-apt-get remove dvc
+apt-get remove -y dvc
 where dvc
