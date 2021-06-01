@@ -3,7 +3,7 @@
 set -e
 set -x
 
-VERSION="2.1.0"
+VERSION="2.2.0"
 BASE="https://github.com/iterative/dvc/releases/download/$VERSION"
 
 AWS_S3_BUCKET=dvc-s3-repo
