@@ -12,6 +12,6 @@ RUN curl https://pyenv.run | bash
 RUN PYTHON_CONFIGURE_OPTS="--enable-shared" ~/.pyenv/bin/pyenv install 3.8.3
 RUN scl enable rh-ruby23 'gem install fpm'
 COPY entrypoint.sh /usr/bin/entrypoint.sh
-RUN locale
+RUN localedef -c -f UTF-8 -i en_US en_US.UTF-8
 RUN chmod +x /usr/bin/entrypoint.sh
 ENTRYPOINT [ "/usr/bin/entrypoint.sh" ]
