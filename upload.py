@@ -26,5 +26,5 @@ flags = " ".join(
 )
 
 check_call(
-    "docker run {flags} -t dvc ./upload.sh", stderr=STDOUT, shell=True,
+    f"docker run {flags} -t dvc ./upload.sh", stderr=STDOUT, shell=True,
 )
