@@ -12,6 +12,10 @@ jobs:
     runs-on: ubuntu-18.04
     steps:
     - uses: actions/checkout@v2
+    - name: Set up Python 3.8
+      uses: actions/setup-python@v2.2.2
+      with:
+        python-version: 3.8
     - name: Download
       run: python download.py
     - name: Build and sign
