@@ -16,6 +16,8 @@ jobs:
       uses: actions/setup-python@v2.2.2
       with:
         python-version: 3.8
+    - name: Install deps
+      run: pip install wget
     - name: Download
       run: python download.py
     - name: Build and sign
