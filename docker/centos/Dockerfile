@@ -1,5 +1,5 @@
 FROM centos:7
-RUN yum install -y wget libffi-devel jq yum-utils gnupg gcc make patch gdbm-devel openssl-devel sqlite-devel readline-devel zlib-devel bzip2-devel ncurses-devel rpmbuild
+RUN yum install -y wget libffi-devel jq yum-utils gnupg gcc make patch gdbm-devel openssl-devel sqlite-devel readline-devel zlib-devel bzip2-devel ncurses-devel rpm-build
 RUN yum -y install yum-plugin-priorities
 RUN sed -i -e "s/\]$/\]\npriority=1/g" /etc/yum.repos.d/CentOS-Base.repo
 RUN yum -y install epel-release
