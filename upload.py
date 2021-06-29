@@ -10,7 +10,7 @@ parser.add_argument(
 )
 args = parser.parse_args()
 
-image = {"deb": "debian", "rpm": "fedora"}[args.pkg]
+image = {"deb": "ubuntu", "rpm": "fedora"}[args.pkg]
 
 check_call(f"docker build -t dvc docker/{image}", stderr=STDOUT, shell=True)
 
