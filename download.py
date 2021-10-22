@@ -1,13 +1,12 @@
+import git
 import os
 import pathlib
 import posixpath
 import shutil
-import tarfile
 
-import wget
 
 VERSION = "2.8.2"
-URL = f"https://github.com/iterative/dvc/archive/{VERSION}.tar.gz"
+URL = "https://github.com/iterative/dvc"
 
 path = pathlib.Path(__file__).parent.absolute()
 dvc = path / "dvc"
@@ -17,16 +16,9 @@ try:
 except FileNotFoundError:
     pass
 
-tar = path / posixpath.basename(URL)
+# NOTE: need full git clone for version detection
+# by setuptools-scm
+repo = git.Repo.clone_from(URL, dvc)
+repo.git.checkout(VERSION)
 
-try:
-    tar.unlink()
-except FileNotFoundError:
-    pass
 
-wget.download(URL, out=os.fspath(tar))
-
-with tarfile.open(tar) as tobj:
-    tobj.extractall()
-
-os.rename(tar.with_name(f"dvc-{VERSION}"), dvc)

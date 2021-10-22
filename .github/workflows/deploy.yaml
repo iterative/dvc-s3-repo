@@ -17,7 +17,7 @@ jobs:
       with:
         python-version: 3.8
     - name: Install deps
-      run: pip install wget
+      run: pip install git
     - name: Download
       run: python download.py
     - name: Build and sign
