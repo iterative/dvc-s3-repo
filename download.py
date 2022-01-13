@@ -1,9 +1,7 @@
-import git
-import os
 import pathlib
-import posixpath
 import shutil
 
+import git
 
 VERSION = "2.9.3"
 URL = "https://github.com/iterative/dvc"
@@ -20,5 +18,3 @@ except FileNotFoundError:
 # by setuptools-scm
 repo = git.Repo.clone_from(URL, dvc)
 repo.git.checkout(VERSION)
-
-
