@@ -1,30 +1,30 @@
 import argparse
 from pathlib import Path
-from subprocess import STDOUT, check_call
+
+from utils import DockerBuilder
 
 dpath = Path(__file__).parent
 
-parser = argparse.ArgumentParser()
-parser.add_argument(
-    "pkg", choices=["deb", "rpm"], help="package type",
-)
-args = parser.parse_args()
 
-image = {"deb": "ubuntu", "rpm": "fedora"}[args.pkg]
+def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        "pkg",
+        choices=["deb", "rpm"],
+        help="package type",
+    )
+    args = parser.parse_args()
+    tag = f"dvc-{args.pkg}"
+    image = {"deb": "ubuntu", "rpm": "fedora"}[args.pkg]
+    docker_dir = f"docker/{image}"
+    target = "upload" if image == "ubuntu" else None
 
-check_call(f"docker build -t dvc docker/{image}", stderr=STDOUT, shell=True)
+    image = DockerBuilder(
+        pkg=args.pkg, tag=tag, directory=docker_dir, target=target
+    )
+    image.build()
+    image.run_upload_package()
 
-flags = " ".join(
-    [
-        "-e GPG_ITERATIVE_ASC",
-        "-e GPG_ITERATIVE_PASS",
-        "-v ~/.aws:/root/.aws",
-        f"-v {dpath.resolve()}:/dvc",
-        f"-w /dvc/{args.pkg}",
-        "--rm",
-    ]
-)
 
-check_call(
-    f"docker run {flags} -t dvc ./upload.sh", stderr=STDOUT, shell=True,
-)
+if __name__ == "__main__":
+    main()
