@@ -58,4 +58,6 @@ COPY entrypoint.sh /usr/bin/entrypoint.sh
 RUN chmod +x /usr/bin/entrypoint.sh
 ENTRYPOINT [ "/usr/bin/entrypoint.sh" ]
 
-FROM base as upload
+FROM builder as uploader
+RUN yum install -y gnupg rpm-sign && \
+    pip install boto awscli
