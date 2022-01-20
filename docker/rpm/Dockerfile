@@ -39,7 +39,7 @@ FROM pyenv as builder
 RUN pip --no-cache install -U pip wheel
 
 # TODO: check if all of these dependencies are required
-RUN yum install -y wget jq yum-utils gnupg make patch gdbm-devel ncurses-devel rpm-build
+RUN yum install -y wget jq yum-utils gnupg patch gdbm-devel ncurses-devel rpm-build
 RUN yum -y install yum-plugin-priorities
 RUN sed -i -e "s/\]$/\]\npriority=1/g" /etc/yum.repos.d/CentOS-Base.repo
 
