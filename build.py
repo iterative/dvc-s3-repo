@@ -1,5 +1,4 @@
 import argparse
-from typing import Optional
 
 from utils import DockerBuilder
 
@@ -12,7 +11,7 @@ docker_map = {
     "rpm": {
         "dir": "docker/centos",
         "tag": "dvc-s3-repo-rpm:latest",
-        "target": None,
+        "target": "base",
     },
 }
 
@@ -26,7 +25,7 @@ def main():
     info = docker_map[args.pkg]
     docker_dir: str = info.get("dir")
     tag: str = info.get("tag")
-    target: Optional[str] = info.get("target")
+    target: str = info.get("target")
 
     image = DockerBuilder(
         pkg=args.pkg,
