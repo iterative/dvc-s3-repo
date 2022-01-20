@@ -34,7 +34,7 @@ RUN pyenv global ${PYTHON_VERSION}
 
 RUN test "${PYTHON_VERSION}" = "$(python --version | awk '{print $2}')"
 
-FROM pyenv as base
+FROM pyenv as builder
 
 RUN pip --no-cache install -U pip wheel
 

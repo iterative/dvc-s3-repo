@@ -2,19 +2,6 @@ import argparse
 
 from utils import DockerBuilder
 
-docker_map = {
-    "deb": {
-        "dir": "docker/ubuntu",
-        "tag": "dvc-s3-repo-deb:latest",
-        "target": "base",
-    },
-    "rpm": {
-        "dir": "docker/centos",
-        "tag": "dvc-s3-repo-rpm:latest",
-        "target": "base",
-    },
-}
-
 
 def main():
     parser = argparse.ArgumentParser()
@@ -22,10 +9,9 @@ def main():
 
     args = parser.parse_args()
 
-    info = docker_map[args.pkg]
-    docker_dir: str = info.get("dir")
-    tag: str = info.get("tag")
-    target: str = info.get("target")
+    docker_dir = f"docker/{args.pkg}"
+    tag: str = f"dvc-s3-repo-{args.pkg}"
+    target = "builder"
 
     image = DockerBuilder(
         pkg=args.pkg,
