@@ -1,13 +1,51 @@
-FROM ubuntu:20.04 as base
-ENV DEBIAN_FRONTEND=noninteractive
+ARG PYTHON_VERSION=3.8.3
+
+FROM ubuntu:18.04 as pyenv
+ARG PYTHON_VERSION
+
+
+# Setup python (pyenv) build dependencies (https://github.com/pyenv/pyenv/wiki#suggested-build-environment)
+RUN apt-get update && \
+   DEBIAN_FRONTEND=noninteractive  apt-get install -y \
+        build-essential \
+        git \
+        curl \
+        libbz2-dev \
+        libffi-dev \
+        liblzma-dev \
+        libncursesw5-dev \
+        libreadline-dev \
+        libsqlite3-dev \
+        libssl-dev \
+        libxml2-dev \
+        libxmlsec1-dev \
+        llvm \
+        tk-dev \
+        wget \
+        xz-utils \
+        zlib1g-dev && \
+    rm -rf /var/lib/apt/lists/*
+
+RUN curl https://pyenv.run | bash
+
+ENV PYENV_ROOT="/root/.pyenv"
+ENV PATH="$PYENV_ROOT/shims:$PYENV_ROOT/bin:$PATH"
+
+RUN PYTHON_CONFIGURE_OPTS="--enable-shared" pyenv install ${PYTHON_VERSION}
+RUN pyenv global ${PYTHON_VERSION}
+
+# make sure we're using the correct python version
+RUN test "${PYTHON_VERSION}" = "$(python --version | awk '{print $2}')"
+
+FROM pyenv as base
 
 RUN apt-get update && \
-    apt-get install -y python-is-python3 python3-pip wget libffi-dev git jq rubygems apt-transport-https && \
-    gem install fpm && \
+    apt-get install -y jq rubygems apt-transport-https && \
     rm -rf /var/lib/apt/lists/*
-    # TODO: maybe move build deps such as fpm away from here
 
+RUN gem install fpm
 
+RUN pip --no-cache-dir install -U pip wheel
 
 FROM base as upload
 
