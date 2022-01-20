@@ -14,11 +14,14 @@ def main():
         help="package type",
     )
     args = parser.parse_args()
-    tag = f"dvc-{args.pkg}"
-    image = {"deb": "ubuntu", "rpm": "fedora"}[args.pkg]
-    docker_dir = f"docker/{image}"
-    target = "upload" if image == "ubuntu" else None
 
+    tag = f"dvc-{args.pkg}"
+    image = {"deb": "ubuntu", "rpm": "centos"}[args.pkg]
+    docker_dir = f"docker/{args.pkg}"
+
+    target = "uploader"
+
+    print(f"* Building {tag} from {docker_dir}")
     image = DockerBuilder(
         pkg=args.pkg, tag=tag, directory=docker_dir, target=target
     )

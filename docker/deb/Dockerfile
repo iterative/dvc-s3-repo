@@ -37,7 +37,7 @@ RUN pyenv global ${PYTHON_VERSION}
 # make sure we're using the correct python version
 RUN test "${PYTHON_VERSION}" = "$(python --version | awk '{print $2}')"
 
-FROM pyenv as base
+FROM pyenv as builder
 
 RUN apt-get update && \
     apt-get install -y jq rubygems apt-transport-https && \
@@ -47,7 +47,7 @@ RUN gem install fpm
 
 RUN pip --no-cache-dir install -U pip wheel
 
-FROM base as upload
+FROM base as uploader
 
 RUN pip --no-cache-dir install boto awscli && \
     gem install deb-s3

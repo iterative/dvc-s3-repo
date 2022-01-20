@@ -2,13 +2,11 @@ import os
 import shutil
 import sys
 from pathlib import Path
-from typing import List, Optional, Tuple
+from typing import Any, Dict, List, Optional
 
 import docker
 
 dpath = Path(__file__).parent
-
-Images = Tuple[docker.models.images.Image]
 
 
 class DockerBuilder:
@@ -34,8 +32,6 @@ class DockerBuilder:
             "-c",
             " && ".join(
                 [
-                    "pip install -U pip",
-                    "pip install wheel",
                     "pip install './dvc[all]'",
                     "pip install -r dvc/scripts/build-requirements.txt",
                     f"python dvc/scripts/build.py {self.pkg}",
@@ -43,44 +39,67 @@ class DockerBuilder:
             ),
         ]
 
-    def build(self, **kwargs) -> Images:
-        print(f"* Building {self.tag} from {self.dir}")
+    @staticmethod
+    def _pretty_print(log: List[Dict[str, Any]]) -> None:
+        for line in log:
+            if "stream" in line:
+                print(line["stream"], end="")
+            elif "error" in line:
+                print(line["error"], file=sys.stderr)
+            else:
+                print(line, file=sys.stderr)
+
+    def build(self, **kwargs) -> docker.models.images.Image:
+        print(f'* Building "{self.tag}" from "{self.dir}"')
         try:
-            images: Images = self.client.images.build(
+            image, log = self.client.images.build(
                 path=self.dir, tag=self.tag, target=self.target, **kwargs
             )
+
         except docker.errors.BuildError as exc:
             print("* Build failed: ")
-            for line in exc.build_log:
-                try:
-                    print(line["stream"], end="")
-                except KeyError:
-                    print(line, file=sys.stderr)
+            log = list(exc.build_log)
             raise
-        return images
+        finally:
+            self._pretty_print(log)
+        return image
 
-    def run(self, command: str, **kwargs):
+    def run(self, command: str, **kwargs) -> int:
+        """Runs the given command and returns the status code"""
         print(f"* Starting container {self.tag} with cmd: {command}")
-        try:
-            return self.client.containers.run(
-                self.tag, command=command, stdout=True, stderr=True, **kwargs
-            )
-        except docker.errors.ContainerError as exc:
-            print("* failed:\n", exc.stderr.decode("UTF-8"), end="")
-            raise
+        container = self.client.containers.run(
+            self.tag,
+            command=command,
+            stdout=True,
+            stderr=True,
+            detach=True,
+            **kwargs,
+        )
 
-    def run_build_package(self):
-        self.run(
+        for line in container.logs(stream=True):
+            print(line.strip().decode("UTF-8"))
+
+        status = container.wait()
+        if status["Error"]:
+            print(f"* Failed! Error: {status['Error']}")
+        return status["StatusCode"]
+
+    def run_build_package(self) -> None:
+        status = self.run(
             command=self.get_pkg_build_cmd(),
             volumes=self.volumes,
             working_dir=str(self.working_dir),
             auto_remove=True,
         )
+        if status:
+            print(f"* Failed to build {self.pkg} package", file=sys.stderr)
+            sys.exit(status)
+
         for path in (dpath / "dvc" / "scripts" / "fpm").glob(f"*.{self.pkg}"):
             shutil.copy(path, dpath)
             print(f"Copied {path} to {dpath}")
 
-    def run_upload_package(self):
+    def run_upload_package(self) -> None:
         env_passthrough = ["GPG_ITERATIVE_ASC", "GPG_ITERATIVE_PASS"]
         all_vols = {
             **self.volumes,
@@ -89,11 +108,13 @@ class DockerBuilder:
                 "mode": "rw",
             },
         }
-        out = self.run(
+        status = self.run(
             command="./upload.sh",
             environment={key: os.environ.get(key) for key in env_passthrough},
             volumes=all_vols,
             working_dir=str(self.working_dir / self.pkg),
             auto_remove=True,
         )
-        print(out.decode("UTF-8"))
+        if status:
+            print(f"* Failed to build {self.pkg} package", file=sys.stderr)
+            sys.exit(status)
