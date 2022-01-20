@@ -29,25 +29,16 @@ class DockerBuilder:
         self.target = target
 
     def get_pkg_build_cmd(self) -> List[str]:
-        if self.pkg == "deb":
-            # this is where pip is installed when running
-            # pip3 install -U pip on ubuntu
-            pip = "/usr/local/bin/pip3"
-        elif self.pkg == "rpm":
-            pip = "pip3"
-        else:
-            raise ValueError("Unsupported package")
-
         return [
             "bash",
             "-c",
             " && ".join(
                 [
-                    "pip3 install -U pip",
-                    f"{pip} install wheel",
-                    f"{pip} install './dvc[all]'",
-                    f"{pip} install -r dvc/scripts/build-requirements.txt",
-                    f"python3 dvc/scripts/build.py {self.pkg}",
+                    "pip install -U pip",
+                    "pip install wheel",
+                    "pip install './dvc[all]'",
+                    "pip install -r dvc/scripts/build-requirements.txt",
+                    f"python dvc/scripts/build.py {self.pkg}",
                 ]
             ),
         ]
