@@ -47,7 +47,7 @@ RUN gem install fpm
 
 RUN pip --no-cache-dir install -U pip wheel
 
-FROM base as uploader
+FROM builder as uploader
 
 RUN pip --no-cache-dir install boto awscli && \
     gem install deb-s3
