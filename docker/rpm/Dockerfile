@@ -58,6 +58,19 @@ COPY entrypoint.sh /usr/bin/entrypoint.sh
 RUN chmod +x /usr/bin/entrypoint.sh
 ENTRYPOINT [ "/usr/bin/entrypoint.sh" ]
 
-FROM builder as uploader
-RUN yum install -y gnupg rpm-sign && \
-    pip install boto awscli
+
+# NOTE: uploading with rpm-s3 requires python2
+FROM fedora:26 as uploader
+RUN dnf update -y && \
+        dnf install -y python-pip \
+            wget \
+            libffi-devel \
+            python-devel \
+            gcc \
+            git \
+            jq \
+            yum-utils \
+            python-deltarpm \
+            gnupg rpm-sign && \
+        pip install --upgrade pip && \
+        pip install boto awscli
