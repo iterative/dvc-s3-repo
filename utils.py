@@ -17,7 +17,7 @@ class DockerBuilder:
         self,
         pkg: str,
         tag: str,
-        directory: str,
+        directory: Optional[str] = None,
         target: Optional[str] = None,
     ):
         self.client = docker.from_env()
@@ -117,4 +117,15 @@ class DockerBuilder:
         )
         if status:
             print(f"* Failed to build {self.pkg} package", file=sys.stderr)
+            sys.exit(status)
+
+    def run_test_package(self) -> None:
+        status = self.run(
+            command=f"./test.sh {self.pkg}",
+            volumes=self.volumes,
+            working_dir=str(self.working_dir),
+            auto_remove=True,
+        )
+        if status:
+            print(f"* Test for {self.pkg} package failed", file=sys.stderr)
             sys.exit(status)
