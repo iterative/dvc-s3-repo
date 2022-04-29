@@ -32,6 +32,9 @@ class DockerBuilder:
             "-c",
             " && ".join(
                 [
+                    # set safe.directory, workaround for for
+                    # https://github.com/pypa/setuptools_scm/issues/707
+                    "git config --global --add safe.directory '*'",
                     "pip install './dvc[all]'",
                     "pip install -r dvc/scripts/build-requirements.txt",
                     f"python dvc/scripts/build.py {self.pkg}",
