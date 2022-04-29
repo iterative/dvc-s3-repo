@@ -2,6 +2,7 @@ name: Deploy deb/rpm to s3 repo
 on:
   push:
     branches: master
+  pull_request: {}
 jobs:
   pkgs:
     name: ${{ matrix.pkg }}
@@ -25,6 +26,7 @@ jobs:
     - name: sanity check
       run: python test.py ${{ matrix.pkg }}
     - name: Upload
+      if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/master' }}
       env:
         AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
