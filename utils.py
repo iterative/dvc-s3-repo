@@ -32,9 +32,11 @@ class DockerBuilder:
             "-c",
             " && ".join(
                 [
-                    "pip install './dvc[all]'",
-                    "pip install -r dvc/scripts/build-requirements.txt",
-                    f"python dvc/scripts/build.py {self.pkg}",
+                    "cd dvc",
+                    "git tag -l",
+                    "pip install '.[all]'",
+                    "pip install -r scripts/build-requirements.txt",
+                    f"python scripts/build.py {self.pkg}",
                 ]
             ),
         ]
