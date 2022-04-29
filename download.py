@@ -17,4 +17,5 @@ except FileNotFoundError:
 # NOTE: need full git clone for version detection
 # by setuptools-scm
 repo = git.Repo.clone_from(URL, dvc)
+repo.git.fetch(tags=True)
 repo.git.checkout(VERSION)
