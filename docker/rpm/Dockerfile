@@ -1,6 +1,6 @@
 ARG PYTHON_VERSION=3.8.3
 
-FROM centos:7 as pyenv
+FROM centos:8 as pyenv
 ARG PYTHON_VERSION
 
 ENV LC_ALL=en_US.UTF-8
