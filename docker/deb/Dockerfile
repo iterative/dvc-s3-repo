@@ -1,4 +1,5 @@
 ARG PYTHON_VERSION=3.8.3
+ARG RUBY_VERSION=2.6.9
 
 FROM ubuntu:18.04 as pyenv
 ARG PYTHON_VERSION
@@ -37,10 +38,20 @@ RUN pyenv global ${PYTHON_VERSION}
 # make sure we're using the correct python version
 RUN test "${PYTHON_VERSION}" = "$(python --version | awk '{print $2}')"
 
-FROM pyenv as builder
+FROM pyenv as rbenv
+ARG RUBY_VERSION
+
+RUN curl -fsSL https://github.com/rbenv/rbenv-installer/raw/HEAD/bin/rbenv-installer | bash
+ENV RBENV_ROOT="/root/.rbenv"
+ENV PATH="$RBENV_ROOT/shims:$RBENV_ROOT/bin:$PATH"
+RUN rbenv install ${RUBY_VERSION}
+RUN rbenv global ${RUBY_VERSION}
+RUN ruby --version | grep ${RUBY_VERSION}
+
+FROM rbenv as builder
 
 RUN apt-get update && \
-    apt-get install -y jq rubygems apt-transport-https && \
+    apt-get install -y jq apt-transport-https && \
     rm -rf /var/lib/apt/lists/*
 
 RUN gem install fpm
