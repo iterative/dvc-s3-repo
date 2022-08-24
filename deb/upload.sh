@@ -9,10 +9,12 @@ source $DIR/../env.sh
 PKG="../*.deb"
 DEB_LIST=$DIR/dvc.list
 ASC=$DIR/../iterative.asc
+GPG=$DIR/../gpg
 AWS_S3_PREFIX=deb
 
 upload_file $DEB_LIST $AWS_S3_PREFIX
 upload_file $ASC $AWS_S3_PREFIX
+upload_file $GPG $AWS_S3_PREFIX
 
 echo "$GPG_ITERATIVE_ASC" > Iterative.asc
 gpg --no-tty --batch --passphrase $GPG_ITERATIVE_PASS --pinentry-mode loopback --import Iterative.asc
