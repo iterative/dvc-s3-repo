@@ -9,6 +9,7 @@ source $DIR/../env.sh
 PKG="../*.rpm"
 RPM_REPO=$DIR/dvc.repo
 ASC=$DIR/../iterative.asc
+GPG=$DIR/../gpg
 AWS_S3_PREFIX=rpm
 RPM_S3_DIR=$DIR/rpm-s3
 
@@ -17,6 +18,7 @@ cp $DIR/rpmmacros ~/.rpmmacros
 
 upload_file $RPM_REPO $AWS_S3_PREFIX
 upload_file $ASC $AWS_S3_PREFIX
+upload_file $GPG $AWS_S3_PREFIX
 
 echo "$GPG_ITERATIVE_ASC" > Iterative.asc
 gpg2 --no-tty --batch --passphrase-file ~/iterative.pass --pinentry-mode loopback --import Iterative.asc
