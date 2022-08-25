@@ -18,8 +18,3 @@ except FileNotFoundError:
 # by setuptools-scm
 repo = git.Repo.clone_from(URL, dvc)
 repo.git.checkout(VERSION)
-
-# FIXME temporary fix for 2.20.0
-(dvc / "scripts" / "pyinstaller" / "hooks" / "hook-fsspec.py").write_text(
-    'hiddenimports = ["fsspec.implementations.memory"]'
-)
