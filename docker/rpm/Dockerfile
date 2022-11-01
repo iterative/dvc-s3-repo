@@ -18,6 +18,7 @@ RUN yum install -y \
         bzip2-devel \
         gcc \
         libffi-devel \
+        openssl-devel \
         openssl11 \
         openssl11-libs \
         openssl11-devel \
