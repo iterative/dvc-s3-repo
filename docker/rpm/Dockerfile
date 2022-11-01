@@ -7,9 +7,9 @@ ARG PYTHON_VERSION
 ENV LC_ALL=en_US.UTF-8
 RUN localedef -c -f UTF-8 -i en_US en_US.UTF-8
 
+RUN yum install epel-release
 # https://github.com/pyenv/pyenv/wiki#suggested-build-environment
 RUN yum install -y \
-        epel-release \
         curl \
         wget \
         git \
