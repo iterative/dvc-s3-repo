@@ -1,4 +1,4 @@
-ARG PYTHON_VERSION=3.8.3
+ARG PYTHON_VERSION=3.10.8
 ARG RUBY_VERSION=2.6.9
 
 FROM centos:7 as pyenv
@@ -7,7 +7,9 @@ ARG PYTHON_VERSION
 ENV LC_ALL=en_US.UTF-8
 RUN localedef -c -f UTF-8 -i en_US en_US.UTF-8
 
+RUN yum install -y epel-release
 # https://github.com/pyenv/pyenv/wiki#suggested-build-environment
+# https://github.com/pyenv/pyenv/issues/2416
 RUN yum install -y \
         curl \
         wget \
@@ -18,6 +20,9 @@ RUN yum install -y \
         gcc \
         libffi-devel \
         openssl-devel \
+        openssl11 \
+        openssl11-libs \
+        openssl11-devel \
         readline-devel \
         sqlite \
         sqlite-devel \
@@ -30,7 +35,10 @@ RUN curl https://pyenv.run | bash
 ENV PYENV_ROOT="/root/.pyenv"
 ENV PATH="$PYENV_ROOT/shims:$PYENV_ROOT/bin:$PATH"
 
-RUN PYTHON_CONFIGURE_OPTS="--enable-shared" ~/.pyenv/bin/pyenv install ${PYTHON_VERSION}
+RUN PYTHON_CONFIGURE_OPTS="--enable-shared" \
+    CPPFLAGS="$(pkg-config --cflags openssl11)" \
+    LDFLAGS="$(pkg-config --libs openssl11)" \
+    ~/.pyenv/bin/pyenv install ${PYTHON_VERSION}
 RUN pyenv global ${PYTHON_VERSION}
 
 RUN test "${PYTHON_VERSION}" = "$(python --version | awk '{print $2}')"
