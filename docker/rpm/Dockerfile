@@ -17,7 +17,7 @@ RUN yum install -y \
         bzip2-devel \
         gcc \
         libffi-devel \
-        openssl-devel \
+        openssl11-devel \
         readline-devel \
         sqlite \
         sqlite-devel \
