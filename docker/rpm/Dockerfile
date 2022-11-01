@@ -33,7 +33,7 @@ RUN curl https://pyenv.run | bash
 ENV PYENV_ROOT="/root/.pyenv"
 ENV PATH="$PYENV_ROOT/shims:$PYENV_ROOT/bin:$PATH"
 
-RUN PYTHON_CONFIGURE_OPTS="--enable-shared" CPPFLAGS=$(pkg-config --cflags openssl11) LDFLAGS=$(pkg-config --libs openssl11) ~/.pyenv/bin/pyenv install ${PYTHON_VERSION}
+RUN PYTHON_CONFIGURE_OPTS="--enable-shared" CPPFLAGS="$(pkg-config --cflags openssl11)" LDFLAGS="$(pkg-config --libs openssl11)" ~/.pyenv/bin/pyenv install ${PYTHON_VERSION}
 RUN pyenv global ${PYTHON_VERSION}
 
 RUN test "${PYTHON_VERSION}" = "$(python --version | awk '{print $2}')"
