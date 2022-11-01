@@ -9,6 +9,7 @@ RUN localedef -c -f UTF-8 -i en_US en_US.UTF-8
 
 # https://github.com/pyenv/pyenv/wiki#suggested-build-environment
 RUN yum install -y \
+        epel-release
         curl \
         wget \
         git \
@@ -17,6 +18,7 @@ RUN yum install -y \
         bzip2-devel \
         gcc \
         libffi-devel \
+        openssl11 \
         openssl11-devel \
         readline-devel \
         sqlite \
@@ -30,7 +32,7 @@ RUN curl https://pyenv.run | bash
 ENV PYENV_ROOT="/root/.pyenv"
 ENV PATH="$PYENV_ROOT/shims:$PYENV_ROOT/bin:$PATH"
 
-RUN PYTHON_CONFIGURE_OPTS="--enable-shared" ~/.pyenv/bin/pyenv install ${PYTHON_VERSION}
+RUN PYTHON_CONFIGURE_OPTS="--enable-shared" CFLAGS=$(pkg-config --cflags openssl11) LDFLAGS=$(pkg-config --libs openssl11) ~/.pyenv/bin/pyenv install ${PYTHON_VERSION}
 RUN pyenv global ${PYTHON_VERSION}
 
 RUN test "${PYTHON_VERSION}" = "$(python --version | awk '{print $2}')"
