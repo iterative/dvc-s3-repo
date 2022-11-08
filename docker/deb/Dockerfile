@@ -61,4 +61,4 @@ RUN pip --no-cache-dir install -U pip wheel
 FROM builder as uploader
 
 RUN pip --no-cache-dir install boto awscli && \
-    gem install deb-s3
+    gem install deb-s3 -v 0.10.0
