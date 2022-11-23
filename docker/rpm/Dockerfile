@@ -53,12 +53,6 @@ RUN yum install -y wget jq yum-utils gnupg patch gdbm-devel ncurses-devel rpm-bu
 
 RUN gem install fpm
 
-COPY entrypoint.sh /usr/bin/entrypoint.sh
-
-RUN chmod +x /usr/bin/entrypoint.sh
-ENTRYPOINT [ "/usr/bin/entrypoint.sh" ]
-
-
 # NOTE: uploading with rpm-s3 requires python2
 FROM fedora:26 as uploader
 RUN dnf update -y && \
