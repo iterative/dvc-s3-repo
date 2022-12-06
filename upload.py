@@ -16,7 +16,6 @@ def main():
     args = parser.parse_args()
 
     tag = f"dvc-{args.pkg}"
-    image = {"deb": "ubuntu", "rpm": "centos"}[args.pkg]
     docker_dir = f"docker/{args.pkg}"
 
     target = "uploader"
