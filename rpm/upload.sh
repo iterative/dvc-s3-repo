@@ -45,4 +45,3 @@ cp $RPM_REPO /etc/yum.repos.d/
 rpm --import $ASC
 dnf update --verbose
 dnf install -y dvc
-dvc --help
