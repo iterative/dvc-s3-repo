@@ -1,8 +1,7 @@
-ARG FEDORA_VERSION=35
 ARG PYTHON_VERSION=3.10.8
 ARG RUBY_VERSION=2.6.9
 
-FROM fedora:${FEDORA_VERSION} as pyenv
+FROM fedora:35 as pyenv
 ARG PYTHON_VERSION
 
 # https://github.com/pyenv/pyenv/wiki#suggested-build-environment
@@ -54,8 +53,8 @@ RUN yum install -y wget jq yum-utils gnupg patch gdbm-devel ncurses-devel rpm-bu
 
 RUN gem install fpm
 
-# NOTE: uploading with rpm-s3 requires python2
-FROM fedora:${FEDORA_VERSION} as uploader
+# NOTE: uploading with rpm-s3 requires python2, so we need to keep using fedora:26
+FROM fedora:26 as uploader
 RUN dnf update -y && \
         dnf install -y python-pip \
             wget \
