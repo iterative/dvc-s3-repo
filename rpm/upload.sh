@@ -17,7 +17,7 @@ cp $DIR/rpmmacros ~/.rpmmacros
 
 upload_file $RPM_REPO $AWS_S3_PREFIX
 upload_file $ASC $AWS_S3_PREFIX
-upload_file $GPG $AWS_S3_PREFIX/gpg
+upload_file $ASC $AWS_S3_PREFIX/gpg
 
 echo "$GPG_ITERATIVE_ASC" > Iterative.asc
 gpg2 --no-tty --batch --passphrase-file ~/iterative.pass --pinentry-mode loopback --import Iterative.asc
