@@ -30,7 +30,6 @@ jobs:
       env:
         AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        GPG_ITERATIVE_ASC: ${{ secrets.GPG_ITERATIVE_ASC }}
         GPG_ITERATIVE_PASS: ${{ secrets.GPG_ITERATIVE_PASS }}
       run: |
         mkdir ~/.aws
