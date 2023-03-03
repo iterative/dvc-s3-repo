@@ -18,6 +18,10 @@ upload_file $ASC $AWS_S3_PREFIX/gpg
 echo "$GPG_ITERATIVE_ASC" > Iterative.secret.asc
 gpg --no-tty --batch --passphrase $GPG_ITERATIVE_PASS --pinentry-mode loopback --import Iterative.secret.asc
 
+gpg --list-keys
+
+KEYID=$(gpg --list-keys --with-colons | awk -F: '/^pub:/ {print $5}')
+
 deb-s3 upload --bucket $AWS_S3_BUCKET \
   --prefix $AWS_S3_PREFIX \
   --preserve-versions \
