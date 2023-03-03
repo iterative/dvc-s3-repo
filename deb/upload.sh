@@ -20,7 +20,7 @@ gpg --no-tty --batch --passphrase $GPG_ITERATIVE_PASS --pinentry-mode loopback -
 
 gpg --list-keys
 
-KEYID=$(gpg --list-keys --with-colons | awk -F: '/^pub:/ {print $5}')
+KEYID=$(gpg --list-secret-keys --with-colons | awk -F: '/^pub:/ {print $5}')
 
 deb-s3 upload --bucket $AWS_S3_BUCKET \
   --prefix $AWS_S3_PREFIX \
