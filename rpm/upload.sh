@@ -19,8 +19,8 @@ upload_file $RPM_REPO $AWS_S3_PREFIX
 upload_file $ASC $AWS_S3_PREFIX
 upload_file $ASC $AWS_S3_PREFIX/gpg
 
-echo "$GPG_ITERATIVE_ASC" > Iterative.asc
-gpg2 --no-tty --batch --passphrase-file ~/iterative.pass --pinentry-mode loopback --import Iterative.asc
+echo "$GPG_ITERATIVE_ASC" > Iterative.secret.asc
+gpg2 --no-tty --batch --passphrase-file ~/iterative.pass --pinentry-mode loopback --import Iterative.secret.asc
 
 rm -rf $RPM_S3_DIR
 git clone https://github.com/efiop/rpm-s3 $RPM_S3_DIR --recurse-submodules

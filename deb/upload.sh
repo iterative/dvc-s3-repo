@@ -15,8 +15,8 @@ upload_file $DEB_LIST $AWS_S3_PREFIX
 upload_file $ASC $AWS_S3_PREFIX
 upload_file $ASC $AWS_S3_PREFIX/gpg
 
-echo "$GPG_ITERATIVE_ASC" > Iterative.asc
-gpg --no-tty --batch --passphrase $GPG_ITERATIVE_PASS --pinentry-mode loopback --import Iterative.asc
+echo "$GPG_ITERATIVE_ASC" > Iterative.secret.asc
+gpg --no-tty --batch --passphrase $GPG_ITERATIVE_PASS --pinentry-mode loopback --import Iterative.secret.asc
 
 deb-s3 upload --bucket $AWS_S3_BUCKET \
   --prefix $AWS_S3_PREFIX \
