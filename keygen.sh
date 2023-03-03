@@ -7,7 +7,7 @@ export GNUPGHOME="$(mktemp -d)"
 
 gpg --passphrase "$PASSWD" \
     --pinentry-mode loopback \
-    --quick-generate-key "Iterative <eng@iterative.ai>" rsa4096 cert 2y
+    --quick-generate-key "Iterative <eng@iterative.ai>" rsa4096 sign 2y
 
 gpg --list-keys
 
