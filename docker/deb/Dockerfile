@@ -1,7 +1,7 @@
 ARG PYTHON_VERSION=3.10.8
 ARG RUBY_VERSION=2.6.9
 
-FROM ubuntu:18.04 as pyenv
+FROM ubuntu:20.04 as pyenv
 ARG PYTHON_VERSION
 
 
