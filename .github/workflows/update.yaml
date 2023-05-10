@@ -1,5 +1,6 @@
 name: Update package
 on:
+  pull_request:
   schedule:
     - cron: '0 0 * * *'
 jobs:
@@ -23,7 +24,7 @@ jobs:
         ./update.sh ${{ steps.latest.outputs.version }}
         echo "::set-output name=changes::$(git diff)"
     - name: create PR
-      if: ${{ steps.update.outputs.changes != '' }}
+      if: ${{ steps.update.outputs.changes != '' && github.event_name != 'pull_request'}}
       uses: peter-evans/create-pull-request@v3
       with:
         commit-message: dvc ${{ steps.latest.outputs.version }}
