@@ -10,6 +10,8 @@ jobs:
     - name: get latest dvc version
       id: latest
       shell: bash
+      env:
+        GH_TOKEN: ${{ github.token }}
       run: |
         version=$(./latest.sh)
         echo "::set-output name=version::$version"
