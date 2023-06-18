@@ -37,7 +37,10 @@ class DockerBuilder:
                     "git config --global --add safe.directory '*'",
                     "pip install './dvc[all]'",
                     "pip install -r dvc/scripts/build-requirements.txt",
-                    f"python dvc/scripts/build.py {self.pkg}",
+                    "python dvc/scripts/pyinstaller/build.py",
+                    "rm -rf dist",
+                    "mv dvc/scripts/pyinstaller/dist dist",
+                    f"python build_pkg.py {self.pkg}",
                 ]
             ),
         ]
@@ -88,6 +91,8 @@ class DockerBuilder:
         return status["StatusCode"]
 
     def run_build_package(self) -> None:
+        (dpath / "dvc" / "dvc" / "_build.py").write_text('PKG = "{args.pkg}"')
+
         status = self.run(
             command=self.get_pkg_build_cmd(),
             volumes=self.volumes,
@@ -97,10 +102,6 @@ class DockerBuilder:
         if status:
             print(f"* Failed to build {self.pkg} package", file=sys.stderr)
             sys.exit(status)
-
-        for path in (dpath / "dvc" / "scripts" / "fpm").glob(f"*.{self.pkg}"):
-            shutil.copy(path, dpath)
-            print(f"Copied {path} to {dpath}")
 
     def run_upload_package(self) -> None:
         env_passthrough = ["GPG_ITERATIVE_ASC", "GPG_ITERATIVE_PASS"]
