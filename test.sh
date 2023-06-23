@@ -18,6 +18,7 @@ pushd example-get-started
 pip install -r src/requirements.txt
 
 dvc doctor
+dvc doctor | head -1 | grep $pkg
 dvc pull
 dvc repro
 dvc status
