@@ -16,6 +16,7 @@ git clone https://github.com/iterative/example-get-started
 
 pushd example-get-started
 pip install -r src/requirements.txt
+pip uninstall -y dvc
 
 dvc doctor
 dvc doctor | head -1 | grep $pkg
