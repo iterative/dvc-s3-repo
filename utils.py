@@ -41,6 +41,7 @@ class DockerBuilder:
                     "rm -rf dist",
                     "mv dvc/scripts/pyinstaller/dist dist",
                     f"python build_pkg.py {self.pkg}",
+                    "pip uninstall -y dvc",
                 ]
             ),
         ]
