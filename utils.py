@@ -91,7 +91,7 @@ class DockerBuilder:
         return status["StatusCode"]
 
     def run_build_package(self) -> None:
-        (dpath / "dvc" / "dvc" / "_build.py").write_text(f'PKG = "{args.pkg}"')
+        (dpath / "dvc" / "dvc" / "_build.py").write_text(f'PKG = "{self.pkg}"')
 
         status = self.run(
             command=self.get_pkg_build_cmd(),
