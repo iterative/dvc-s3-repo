@@ -36,10 +36,11 @@ class DockerBuilder:
                     # https://github.com/pypa/setuptools_scm/issues/707
                     "git config --global --add safe.directory '*'",
                     "pip install './dvc[all]'",
-                    "pip install -r dvc/scripts/build-requirements.txt",
-                    "python dvc/scripts/pyinstaller/build.py",
-                    "rm -rf dist",
-                    "mv dvc/scripts/pyinstaller/dist dist",
+                    # https://github.com/iterative/dvc/issues/7949
+                    "pip install PyInstaller==5.9.0",
+                    # https://github.com/iterative/dvc/issues/9654
+                    "pip install flufl-lock==7.1.1",
+                    "python build_bin.py",
                     f"python build_pkg.py {self.pkg}",
                 ]
             ),
