@@ -87,9 +87,10 @@ class DockerBuilder:
             print(line.strip().decode("UTF-8"))
 
         status = container.wait()
-        if status["Error"]:
-            print(f"* Failed! Error: {status['Error']}")
-        return status["StatusCode"]
+        ret = status["StatusCode"]
+        if ret != 0:
+            print(f"* Failed! Error: {status.get('Error')}")
+        return ret
 
     def run_build_package(self) -> None:
         (dpath / "dvc" / "dvc" / "_build.py").write_text(f'PKG = "{self.pkg}"')
