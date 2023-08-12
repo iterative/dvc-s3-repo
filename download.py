@@ -3,6 +3,7 @@ import shutil
 
 import git
 
+
 VERSION = "3.15.2"
 URL = "https://github.com/iterative/dvc"
 
