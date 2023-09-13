@@ -2,7 +2,7 @@ name: Deploy deb/rpm to s3 repo
 on:
   push:
     branches: main
-  pull_request:
+  pull_request: {}
 jobs:
   pkgs:
     name: ${{ matrix.pkg }}
@@ -11,9 +11,9 @@ jobs:
       matrix:
         pkg: [deb, rpm]
     environment: aws
-      permissions:
-        contents: read
-        id-token: write
+    permissions:
+      contents: read
+      id-token: write
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
