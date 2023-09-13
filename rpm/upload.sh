@@ -28,7 +28,7 @@ git clone https://github.com/iterative/rpm-s3 $RPM_S3_DIR --recurse-submodules
 rpm --resign $PKG
 
 export AWS_ACCESS_KEY=$(printenv AWS_ACCESS_KEY_ID)
-export AWS_SECRET_KEY=$(prinetnv AWS_SECRET_ACCESS_KEY)
+export AWS_SECRET_KEY=$(printenv AWS_SECRET_ACCESS_KEY)
 $RPM_S3_DIR/bin/rpm-s3 -vvv \
   --bucket $AWS_S3_BUCKET \
   --repopath $AWS_S3_PREFIX \
