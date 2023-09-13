@@ -27,12 +27,12 @@ git clone https://github.com/efiop/rpm-s3 $RPM_S3_DIR --recurse-submodules
 
 rpm --resign $PKG
 
-export AWS_ACCESS_KEY=$(get_conf aws_access_key_id)
-export AWS_SECRET_KEY=$(get_conf aws_secret_access_key)
+export AWS_ACCESS_KEY=$(printenv AWS_ACCESS_KEY_ID)
+export AWS_SECRET_KEY=$(prinetnv AWS_SECRET_ACCESS_KEY)
 $RPM_S3_DIR/bin/rpm-s3 -vvv \
   --bucket $AWS_S3_BUCKET \
   --repopath $AWS_S3_PREFIX \
-  --region $(get_conf region) \
+  --region $(printenv AWS_DEFAULT_REGION) \
   --keep 100 \
   --visibility public-read \
   --sign \
