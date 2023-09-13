@@ -106,18 +106,18 @@ class DockerBuilder:
             sys.exit(status)
 
     def run_upload_package(self) -> None:
-        env_passthrough = ["GPG_ITERATIVE_ASC", "GPG_ITERATIVE_PASS"]
-        all_vols = {
-            **self.volumes,
-            str(Path("~/.aws").expanduser()): {
-                "bind": "/root/.aws",
-                "mode": "rw",
-            },
-        }
+        env_passthrough = [
+            "AWS_ACCESS_KEY_ID",
+            "AWS_SECRET_ACCESS_KEY",
+            "AWS_SESSION_TOKEN",
+            "AWS_DEFAULT_REGION",
+            "GPG_ITERATIVE_ASC",
+            "GPG_ITERATIVE_PASS",
+        ]
         status = self.run(
             command="./upload.sh",
             environment={key: os.environ.get(key) for key in env_passthrough},
-            volumes=all_vols,
+            volumes=self.volumes,
             working_dir=str(self.working_dir / self.pkg),
             auto_remove=True,
         )

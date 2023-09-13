@@ -29,9 +29,10 @@ deb-s3 upload --bucket $AWS_S3_BUCKET \
   --codename stable \
   --sign=$KEYID \
   --gpg-options="--no-tty --batch --passphrase $GPG_ITERATIVE_PASS  --pinentry-mode loopback" \
-  --access-key-id $(get_conf aws_access_key_id) \
-  --secret-access-key $(get_conf aws_secret_access_key) \
-  --s3-region $(get_conf region) \
+  --access-key-id $(printenv AWS_ACCESS_KEY_ID) \
+  --secret-access-key $(printenv AWS_SECRET_ACCESS_KEY) \
+  --session-token $(printenv AWS_SESSION_TOKEN) \
+  --s3-region $(printenv AWS_DEFAULT_REGION) \
   $PKG
 
 cp $DEB_LIST /etc/apt/sources.list.d/
