@@ -40,5 +40,7 @@ remotes = [
 ]
 
 print(out)
+first = out.splitlines()[0]
+assert "(deb)" in first or "(rpm)" in first
 for remote in remotes:
     assert f"\t{remote}" in out, f"Missing support for {remote}"
