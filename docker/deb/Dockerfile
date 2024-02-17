@@ -54,6 +54,7 @@ RUN apt-get update && \
     apt-get install -y jq apt-transport-https && \
     rm -rf /var/lib/apt/lists/*
 
+RUN gem install dotenv -v 2.8.1
 RUN gem install fpm
 
 RUN pip --no-cache-dir install -U pip wheel
