@@ -68,4 +68,4 @@ RUN dnf update -y && \
             python-deltarpm \
             gnupg rpm-sign && \
         pip install --upgrade pip && \
-        pip install boto awscli
+        pip install boto awscli python-dateutil==2.8.2
