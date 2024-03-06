@@ -1,31 +1,47 @@
 name: Update package
 on:
-  pull_request:
+  push:
+    branches: main
   schedule:
     - cron: '0 0 * * *'
+  workflow_dispatch:
+
 jobs:
   update:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     - name: get latest dvc version
       id: latest
       shell: bash
       env:
         GH_TOKEN: ${{ github.token }}
-      run: |
-        version=$(./latest.sh)
-        echo "::set-output name=version::$version"
+      run: echo "version=$(./latest.sh)" >> $GITHUB_OUTPUT
     - name: try update
       id: update
       shell: bash
       run: |
         echo latest version ${{ steps.latest.outputs.version }}
         ./update.sh ${{ steps.latest.outputs.version }}
-        echo "::set-output name=changes::$(git diff)"
+        echo "changes=$(git diff)" >> $GITHUB_OUTPUT
     - name: create PR
-      if: ${{ steps.update.outputs.changes != '' && github.event_name != 'pull_request'}}
-      uses: peter-evans/create-pull-request@v3
+      if: ${{ steps.update.outputs.changes != '' }}
+      uses: peter-evans/create-pull-request@v6
       with:
         commit-message: dvc ${{ steps.latest.outputs.version }}
         title: dvc ${{ steps.latest.outputs.version }}
+    - name: Merge the PR
+      if: ${{ steps.update.outputs.changes != '' }}
+      run: gh pr merge --squash --delete-branch ${{ steps.create-pr.outputs.pull-request-url }}
+      env:
+        GITHUB_TOKEN: ${{ github.token }}
+
+    - name: Send message to slack
+      if: failure()
+      uses: rtCamp/action-slack-notify@v2.2.1
+      env:
+        SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+        SLACK_COLOR: ${{ job.status }}
+        SLACK_MESSAGE: 'Package update failed for ${{ github.repository }}'
+        SLACK_TITLE: CI Status
+        SLACK_USERNAME: dvc-pkg-update

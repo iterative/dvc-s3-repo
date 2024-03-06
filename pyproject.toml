@@ -1,17 +1,5 @@
-[tool.black]
-line-length = 79
-include = '\.pyi?$'
-exclude = '''
-/(
-    \.eggs
-  | \.git
-  | \.hg
-  | \.mypy_cache
-  | \.tox
-  | \.venv
-  | _build
-  | buck-out
-  | build
-  | dist
-)/
-'''
+[tool.ruff]
+target-version = "py39"
+
+[tool.ruff.lint]
+extend-select = ["B", "C4", "I", "T10"]

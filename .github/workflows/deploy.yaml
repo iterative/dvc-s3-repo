@@ -16,9 +16,9 @@ jobs:
       id-token: write
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     - name: Set up Python 3.10
-      uses: actions/setup-python@v4
+      uses: actions/setup-python@v5
       with:
         python-version: "3.10"
     - name: Install deps
@@ -29,7 +29,7 @@ jobs:
       run: python build.py ${{ matrix.pkg }}
     - name: sanity check
       run: python test.py ${{ matrix.pkg }}
-    - uses: aws-actions/configure-aws-credentials@v1
+    - uses: aws-actions/configure-aws-credentials@v4
       with:
         aws-region: us-east-2
         role-to-assume: arn:aws:iam::260760892802:role/dvc-s3-repo-deploy
@@ -39,3 +39,17 @@ jobs:
         GPG_ITERATIVE_ASC: ${{ secrets.GPG_ITERATIVE_ASC }}
         GPG_ITERATIVE_PASS: ${{ secrets.GPG_ITERATIVE_PASS }}
       run: python upload.py ${{ matrix.pkg }}
+
+  notify:
+    if: github.ref == 'refs/heads/main' && failure()
+    needs: [pkgs]
+    runs-on: ubuntu-latest
+    steps:
+    - name: Slack Notification
+      uses: rtCamp/action-slack-notify@v2.2.1
+      env:
+        SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+        SLACK_COLOR: ${{ job.status }}
+        SLACK_MESSAGE: 'Package build failed for ${{ github.repository }}'
+        SLACK_TITLE: CI Status
+        SLACK_USERNAME: dvc-pkg-build

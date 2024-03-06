@@ -21,9 +21,7 @@ def main():
     target = "uploader"
 
     print(f"* Building {tag} from {docker_dir}")
-    image = DockerBuilder(
-        pkg=args.pkg, tag=tag, directory=docker_dir, target=target
-    )
+    image = DockerBuilder(pkg=args.pkg, tag=tag, directory=docker_dir, target=target)
     image.build()
     image.run_upload_package()
 
