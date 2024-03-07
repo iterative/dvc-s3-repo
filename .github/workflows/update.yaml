@@ -23,7 +23,7 @@ jobs:
       run: |
         echo latest version ${{ steps.latest.outputs.version }}
         ./update.sh ${{ steps.latest.outputs.version }}
-        echo "changes=$(git diff)" >> $GITHUB_OUTPUT
+        echo "changes=$(git diff | tr '\n' ' ')" >> $GITHUB_OUTPUT
     - name: create PR
       if: ${{ steps.update.outputs.changes != '' }}
       uses: peter-evans/create-pull-request@v6
