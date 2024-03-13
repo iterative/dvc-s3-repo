@@ -26,6 +26,7 @@ jobs:
         echo "changes=$(git diff | tr '\n' ' ')" >> $GITHUB_OUTPUT
     - name: create PR
       if: ${{ steps.update.outputs.changes != '' }}
+      id: create-pr
       uses: peter-evans/create-pull-request@v6
       with:
         commit-message: dvc ${{ steps.latest.outputs.version }}
