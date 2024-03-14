@@ -32,9 +32,9 @@ jobs:
         commit-message: dvc ${{ steps.latest.outputs.version }}
         title: dvc ${{ steps.latest.outputs.version }}
         token: ${{ secrets.OLIVAW_PAT }}
-    - name: Merge the PR
+    - name: Approve the PR
       if: ${{ steps.update.outputs.changes != '' }}
-      run: gh pr merge --squash --delete-branch ${{ steps.create-pr.outputs.pull-request-url }}
+      run: gh pr review --approve ${{ steps.create-pr.outputs.pull-request-url }}
       env:
         GITHUB_TOKEN: ${{ github.token }}
 
