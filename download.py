@@ -3,7 +3,7 @@ import shutil
 
 import git
 
-VERSION = "3.51.2"
+VERSION = "3.51.3"
 URL = "https://github.com/iterative/dvc"
 
 path = pathlib.Path(__file__).parent.absolute()
