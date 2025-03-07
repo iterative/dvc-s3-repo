@@ -1,5 +1,6 @@
-[![Build Status](https://travis-ci.com/iterative/dvc-s3-repo.svg?branch=master)](https://travis-ci.com/iterative/dvc-s3-repo)
 # dvc-s3-repo
+[![Deploy deb/rpm to s3 repo](https://github.com/iterative/dvc-s3-repo/actions/workflows/deploy.yaml/badge.svg)](https://github.com/iterative/dvc-s3-repo/actions/workflows/deploy.yaml)
+
 Maintain deb and rpm repositories on s3
 
 ## Ubuntu, Debian
