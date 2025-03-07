@@ -4,7 +4,7 @@ Maintain deb and rpm repositories on s3
 
 ## Ubuntu, Debian
 Install dvc from dep repository:
-```
+```console
 $ sudo apt install wget gpg
 $ sudo mkdir -p /etc/apt/keyrings
 $ wget -qO - https://dvc.org/deb/iterative.asc | sudo gpg --dearmor -o /etc/apt/keyrings/packages.iterative.gpg
@@ -16,7 +16,7 @@ $ sudo apt install dvc
 
 ## Fedora, Centos, RHEL
 Install dvc from rpm repository:
-```
+```console
 $ sudo wget \
        https://dvc.org/rpm/dvc.repo \
        -O /etc/yum.repos.d/dvc.repo
