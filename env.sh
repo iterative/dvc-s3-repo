@@ -3,7 +3,7 @@
 set -e
 set -x
 
-AWS_S3_BUCKET=dvc-s3-repo
+AWS_S3_BUCKET=dvc-public
 
 RPM_PKG="dvc-$VERSION-1.x86_64.rpm"
 DEB_PKG="dvc_""$VERSION""_amd64.deb"
