@@ -9,7 +9,7 @@ source $DIR/../env.sh
 PKG="../*.rpm"
 RPM_REPO=$DIR/dvc.repo
 ASC=$DIR/../iterative.asc
-AWS_S3_PREFIX=rpm
+AWS_S3_PREFIX=dvc-pkgs/rpm
 RPM_S3_DIR=$DIR/rpm-s3
 
 echo "$GPG_ITERATIVE_PASS" > ~/iterative.pass
