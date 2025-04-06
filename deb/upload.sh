@@ -9,7 +9,7 @@ source $DIR/../env.sh
 PKG="../*.deb"
 DEB_LIST=$DIR/dvc.list
 ASC=$DIR/../iterative.asc
-AWS_S3_PREFIX=deb
+AWS_S3_PREFIX=dvc-pkgs/deb
 
 upload_file $DEB_LIST $AWS_S3_PREFIX
 upload_file $ASC $AWS_S3_PREFIX
