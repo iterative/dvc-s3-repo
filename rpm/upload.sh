@@ -35,7 +35,7 @@ $RPM_S3_DIR/bin/rpm-s3 -vvv \
   --region $(printenv AWS_DEFAULT_REGION) \
   --keep 100 \
   --visibility None \  # don't use S3 ACL
-  --sign \
+--sign \
   --gpg-bin gpg2 \
   --gpg-options="--no-tty --batch --passphrase $GPG_ITERATIVE_PASS  --pinentry-mode loopback" \
   $PKG
