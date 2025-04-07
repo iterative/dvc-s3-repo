@@ -34,10 +34,10 @@ $RPM_S3_DIR/bin/rpm-s3 -vvv \
   --repopath $AWS_S3_PREFIX \
   --region $(printenv AWS_DEFAULT_REGION) \
   --keep 100 \
-  --visibility nil \
+  --visibility bucket-owner-full-control \
   --sign \
   --gpg-bin gpg2 \
-  --gpg-options="--no-tty --batch --passphrase $GPG_ITERATIVE_PASS --pinentry-mode loopback" \
+  --gpg-options="--no-tty --batch --passphrase $GPG_ITERATIVE_PASS  --pinentry-mode loopback" \
   $PKG
 
 cp $RPM_REPO /etc/yum.repos.d/
