@@ -6,6 +6,10 @@ on:
     - cron: '0 0 * * *'
   workflow_dispatch:
 
+permissions:
+  contents: write
+  pull-requests: write
+
 jobs:
   update:
     runs-on: ubuntu-latest
@@ -31,13 +35,13 @@ jobs:
       with:
         commit-message: dvc ${{ steps.latest.outputs.version }}
         title: dvc ${{ steps.latest.outputs.version }}
-        token: ${{ secrets.OLIVAW_PAT }}
-        author: Iterative Olivaw <support@iterative.ai>
-    - name: Merge the PR
-      if: ${{ steps.update.outputs.changes != '' }}
-      run: gh pr merge --squash --delete-branch --auto ${{ steps.create-pr.outputs.pull-request-url }}
-      env:
-        GITHUB_TOKEN: ${{ secrets.OLIVAW_PAT }}
+        # token: ${{ secrets.OLIVAW_PAT }}
+        # author: Iterative Olivaw <support@iterative.ai>
+    # - name: Merge the PR
+    #   if: ${{ steps.update.outputs.changes != '' }}
+    #   run: gh pr merge --squash --delete-branch --auto ${{ steps.create-pr.outputs.pull-request-url }}
+    #   env:
+    #     GITHUB_TOKEN: ${{ secrets.OLIVAW_PAT }}
 
     - name: Send message to slack
       if: failure()
