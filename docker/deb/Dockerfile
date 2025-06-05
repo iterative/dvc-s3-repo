@@ -1,9 +1,8 @@
-ARG PYTHON_VERSION=3.12.7
-ARG RUBY_VERSION=2.6.9
+ARG PYTHON_VERSION=3.12
+ARG RUBY_VERSION=3.4.4
 
-FROM ubuntu:20.04 as pyenv
+FROM ubuntu:20.04 AS pyenv
 ARG PYTHON_VERSION
-
 
 # Setup python (pyenv) build dependencies (https://github.com/pyenv/pyenv/wiki#suggested-build-environment)
 RUN apt-get update && \
@@ -25,6 +24,8 @@ RUN apt-get update && \
         wget \
         xz-utils \
         zlib1g-dev && \
+    # ruby dependencies
+    apt-get install libyaml-dev -y && \
     rm -rf /var/lib/apt/lists/*
 
 RUN curl https://pyenv.run | bash
@@ -36,9 +37,9 @@ RUN PYTHON_CONFIGURE_OPTS="--enable-shared" pyenv install ${PYTHON_VERSION}
 RUN pyenv global ${PYTHON_VERSION}
 
 # make sure we're using the correct python version
-RUN test "${PYTHON_VERSION}" = "$(python --version | awk '{print $2}')"
+RUN python --version | grep ${PYTHON_VERSION}
 
-FROM pyenv as rbenv
+FROM pyenv AS rbenv
 ARG RUBY_VERSION
 
 RUN curl -fsSL https://github.com/rbenv/rbenv-installer/raw/HEAD/bin/rbenv-installer | bash
@@ -48,18 +49,16 @@ RUN rbenv install ${RUBY_VERSION}
 RUN rbenv global ${RUBY_VERSION}
 RUN ruby --version | grep ${RUBY_VERSION}
 
-FROM rbenv as builder
+FROM rbenv AS builder
 
-RUN apt-get update && \
-    apt-get install -y jq apt-transport-https && \
-    rm -rf /var/lib/apt/lists/*
+RUN gem install dotenv fpm
 
-RUN gem install dotenv -v 2.8.1
-RUN gem install fpm
+ENV PIP_ROOT_USER_ACTION=ignore
 
 RUN pip --no-cache-dir install -U pip wheel
 
-FROM builder as uploader
+FROM builder AS uploader
 
 RUN pip --no-cache-dir install boto awscli && \
-    gem install deb-s3 -v 0.10.0
+# https://github.com/deb-s3/deb-s3
+    gem install deb-s3
