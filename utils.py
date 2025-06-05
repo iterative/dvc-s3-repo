@@ -36,7 +36,7 @@ class DockerBuilder:
                     "git config --global --add safe.directory '*'",
                     "pip install './dvc[all]'",
                     # https://github.com/iterative/dvc/issues/7949
-                    "pip install PyInstaller==6.9.0",
+                    "pip install PyInstaller==6.14.0",
                     # https://github.com/iterative/dvc/issues/9654
                     "pip install flufl-lock==7.1.1",
                     "python build_bin.py",
