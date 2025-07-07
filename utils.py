@@ -110,6 +110,7 @@ class DockerBuilder:
             "AWS_SECRET_ACCESS_KEY",
             "AWS_SESSION_TOKEN",
             "AWS_DEFAULT_REGION",
+            "AWS_S3_BUCKET",
             "GPG_ITERATIVE_ASC",
             "GPG_ITERATIVE_PASS",
         ]

@@ -40,6 +40,17 @@ jobs:
         GPG_ITERATIVE_ASC: ${{ secrets.GPG_ITERATIVE_ASC }}
         GPG_ITERATIVE_PASS: ${{ secrets.GPG_ITERATIVE_PASS }}
       run: python upload.py ${{ matrix.pkg }}
+    - uses: aws-actions/configure-aws-credentials@v4
+      with:
+        aws-region: us-east-2
+        role-to-assume: arn:aws:iam::977611293394:role/dvc-s3-repo-deploy
+    - name: Upload
+      if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
+      env:
+        GPG_ITERATIVE_ASC: ${{ secrets.GPG_ITERATIVE_ASC }}
+        GPG_ITERATIVE_PASS: ${{ secrets.GPG_ITERATIVE_PASS }}
+        AWS_S3_BUCKET: dvc-packages
+      run: python upload.py ${{ matrix.pkg }}
 
   notify:
     if: github.ref == 'refs/heads/main' && failure()
