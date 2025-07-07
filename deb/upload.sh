@@ -13,6 +13,7 @@ if [ -z "$AWS_S3_PREFIX" ]; then
   exit 1
 fi
 
+DIR=$(dirname "${BASH_SOURCE[0]}")
 PKG="../*.deb"
 DEB_LIST=$DIR/dvc.list
 ASC=$DIR/../iterative.asc
