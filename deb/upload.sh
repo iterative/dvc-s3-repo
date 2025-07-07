@@ -3,17 +3,23 @@
 set -e
 set -x
 
-DIR=$(dirname "${BASH_SOURCE[0]}")
-source $DIR/../env.sh
+if [ -z "$AWS_S3_BUCKET" ]; then
+  echo "AWS_S3_BUCKET is not set."
+  exit 1
+fi
+
+if [ -z "$AWS_S3_PREFIX" ]; then
+  echo "AWS_S3_PREFIX is not set."
+  exit 1
+fi
 
 PKG="../*.deb"
 DEB_LIST=$DIR/dvc.list
 ASC=$DIR/../iterative.asc
-AWS_S3_PREFIX=dvc-pkgs/deb
 
-upload_file $DEB_LIST $AWS_S3_PREFIX
-upload_file $ASC $AWS_S3_PREFIX
-upload_file $ASC $AWS_S3_PREFIX/gpg
+aws s3 cp $DEB_LIST s3://$AWS_S3_BUCKET/$AWS_S3_PREFIX/
+aws s3 cp $ASC s3://$AWS_S3_BUCKET/$AWS_S3_PREFIX/
+aws s3 cp $ASC s3://$AWS_S3_BUCKET/$AWS_S3_PREFIX/gpg/
 
 echo "$GPG_ITERATIVE_ASC" > Iterative.secret.asc
 gpg --no-tty --batch --passphrase $GPG_ITERATIVE_PASS --pinentry-mode loopback --import Iterative.secret.asc

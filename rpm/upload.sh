@@ -3,21 +3,27 @@
 set -e
 set -x
 
-DIR=$(dirname "${BASH_SOURCE[0]}")
-source $DIR/../env.sh
+if [ -z "$AWS_S3_BUCKET" ]; then
+  echo "AWS_S3_BUCKET is not set."
+  exit 1
+fi
+
+if [ -z "$AWS_S3_PREFIX" ]; then
+  echo "AWS_S3_PREFIX is not set."
+  exit 1
+fi
 
 PKG="../*.rpm"
 RPM_REPO=$DIR/dvc.repo
 ASC=$DIR/../iterative.asc
-AWS_S3_PREFIX=dvc-pkgs/rpm
 RPM_S3_DIR=$DIR/rpm-s3
 
 echo "$GPG_ITERATIVE_PASS" > ~/iterative.pass
 cp $DIR/rpmmacros ~/.rpmmacros
 
-upload_file $RPM_REPO $AWS_S3_PREFIX
-upload_file $ASC $AWS_S3_PREFIX
-upload_file $ASC $AWS_S3_PREFIX/gpg
+aws s3 cp $RPM_REPO s3://$AWS_S3_BUCKET/$AWS_S3_PREFIX/
+aws s3 cp $ASC s3://$AWS_S3_BUCKET/$AWS_S3_PREFIX/
+aws s3 cp $ASC s3://$AWS_S3_BUCKET/$AWS_S3_PREFIX/gpg/
 
 echo "$GPG_ITERATIVE_ASC" > Iterative.secret.asc
 gpg2 --no-tty --batch --passphrase-file ~/iterative.pass --pinentry-mode loopback --import Iterative.secret.asc
