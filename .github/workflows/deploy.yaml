@@ -22,24 +22,25 @@ jobs:
       uses: actions/setup-python@v5
       with:
         python-version: "3.12"
-    - name: Install deps
-      run: pip install gitpython docker
-    - name: Download
-      run: python download.py
-    - name: Build and sign
-      run: python build.py ${{ matrix.pkg }}
-    - name: sanity check
-      run: python test.py ${{ matrix.pkg }}
+    # - name: Install deps
+    #   run: pip install gitpython docker
+    # - name: Download
+    #   run: python download.py
+    # - name: Build and sign
+    #   run: python build.py ${{ matrix.pkg }}
+    # - name: sanity check
+    #   run: python test.py ${{ matrix.pkg }}
     - uses: aws-actions/configure-aws-credentials@v4
       with:
         aws-region: us-east-2
-        role-to-assume: arn:aws:iam::260760892802:role/dvc-s3-repo-deploy
-    - name: Upload
-      if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
-      env:
-        GPG_ITERATIVE_ASC: ${{ secrets.GPG_ITERATIVE_ASC }}
-        GPG_ITERATIVE_PASS: ${{ secrets.GPG_ITERATIVE_PASS }}
-      run: python upload.py ${{ matrix.pkg }}
+        role-to-assume: arn:aws:iam::977611293394:role/dvc-s3-repo-deploy
+    - run: aws s3 ls --recursive s3://dvc-packages/
+    # - name: Upload
+    #   if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
+    #   env:
+    #     GPG_ITERATIVE_ASC: ${{ secrets.GPG_ITERATIVE_ASC }}
+    #     GPG_ITERATIVE_PASS: ${{ secrets.GPG_ITERATIVE_PASS }}
+    #   run: python upload.py ${{ matrix.pkg }}
 
   notify:
     if: github.ref == 'refs/heads/main' && failure()
