@@ -37,7 +37,8 @@ RUN test "${PYTHON_VERSION}" = "$(python --version | awk '{print $2}')"
 FROM pyenv as rbenv
 ARG RUBY_VERSION
 
-RUN curl -fsSL https://github.com/rbenv/rbenv-installer/raw/HEAD/bin/rbenv-installer | bash
+RUN yum install -y rbenv
+
 ENV RBENV_ROOT="/root/.rbenv"
 ENV PATH="$RBENV_ROOT/shims:$RBENV_ROOT/bin:$PATH"
 RUN rbenv install ${RUBY_VERSION}
