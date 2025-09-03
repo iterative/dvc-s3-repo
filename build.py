@@ -10,7 +10,7 @@ def main():
     args = parser.parse_args()
 
     docker_dir = f"docker/{args.pkg}"
-    tag: str = f"dvc-s3-repo-{args.pkg}"
+    tag = f"dvc-s3-repo-{args.pkg}"
     target = "builder"
 
     image = DockerBuilder(
