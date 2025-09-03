@@ -67,5 +67,7 @@ RUN dnf update -y && \
             yum-utils \
             python-deltarpm \
             gnupg rpm-sign && \
-        pip install --upgrade pip && \
-        pip install boto awscli python-dateutil==2.8.2
+        pip install --upgrade pip setuptools wheel && \
+        pip install 'cython<3' && \
+        pip install --no-build-isolation 'pyyaml==5.4.1' && \
+        pip install boto awscli python-dateutil
