@@ -1,5 +1,5 @@
 ARG PYTHON_VERSION=3.12
-ARG RUBY_VERSION=3.4.4
+ARG RUBY_VERSION=3.4.5
 
 FROM ubuntu:20.04 AS pyenv
 ARG PYTHON_VERSION
@@ -51,7 +51,7 @@ RUN ruby --version | grep ${RUBY_VERSION}
 
 FROM rbenv AS builder
 
-RUN gem install dotenv fpm
+RUN gem install fpm
 
 ENV PIP_ROOT_USER_ACTION=ignore
 

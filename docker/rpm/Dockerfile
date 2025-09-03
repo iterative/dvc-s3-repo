@@ -1,7 +1,7 @@
 ARG PYTHON_VERSION=3.12.7
-ARG RUBY_VERSION=2.6.9
+ARG RUBY_VERSION=3.4.5
 
-FROM fedora:35 as pyenv
+FROM fedora:41 as pyenv
 ARG PYTHON_VERSION
 
 # https://github.com/pyenv/pyenv/wiki#suggested-build-environment
@@ -51,8 +51,6 @@ RUN pip --no-cache install -U pip wheel
 
 # TODO: check if all of these dependencies are required
 RUN yum install -y wget jq yum-utils gnupg patch gdbm-devel ncurses-devel rpm-build
-
-RUN gem install dotenv -v 2.8.1
 RUN gem install fpm
 
 # NOTE: uploading with rpm-s3 requires python2, so we need to keep using fedora:26

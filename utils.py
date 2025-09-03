@@ -25,26 +25,6 @@ class DockerBuilder:
         self.tag = tag
         self.target = target
 
-    def get_pkg_build_cmd(self) -> List[str]:
-        return [
-            "bash",
-            "-c",
-            " && ".join(
-                [
-                    # set safe.directory, workaround for for
-                    # https://github.com/pypa/setuptools_scm/issues/707
-                    "git config --global --add safe.directory '*'",
-                    "python -m pip install './dvc[all]'",
-                    # https://github.com/iterative/dvc/issues/7949
-                    "python -m pip install PyInstaller==6.14.0",
-                    # https://github.com/iterative/dvc/issues/9654
-                    "pip install flufl-lock==7.1.1",
-                    "python build_bin.py",
-                    f"python build_pkg.py {self.pkg}",
-                ]
-            ),
-        ]
-
     @staticmethod
     def _pretty_print(log: List[Dict[str, Any]]) -> None:
         for line in log:
@@ -95,7 +75,7 @@ class DockerBuilder:
         (dpath / "dvc" / "dvc" / "_build.py").write_text(f'PKG = "{self.pkg}"')
 
         status = self.run(
-            command=self.get_pkg_build_cmd(),
+            command=f"./build.sh {self.pkg}",
             volumes=self.volumes,
             working_dir=str(self.working_dir),
             auto_remove=True,
