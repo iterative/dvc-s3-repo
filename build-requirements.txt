@@ -1,1 +1,1 @@
-PyInstaller==6.15.0
+PyInstaller==6.16.0
