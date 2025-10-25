@@ -18,10 +18,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v5
-    - name: Set up Python 3.12
+    - name: Set up Python 3.14
       uses: actions/setup-python@v6
       with:
-        python-version: "3.12"
+        python-version: "3.14"
     - name: Install deps
       run: pip install gitpython docker
     - name: Download
@@ -35,7 +35,7 @@ jobs:
         aws-region: us-east-2
         role-to-assume: arn:aws:iam::977611293394:role/dvc-s3-repo-deploy-${{ matrix.pkg }}
     - name: Upload
-      if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
+      if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' && startsWith(github.event.head_commit.message, 'updated dvc to') }}
       env:
         GPG_ITERATIVE_ASC: ${{ secrets.GPG_ITERATIVE_ASC }}
         GPG_ITERATIVE_PASS: ${{ secrets.GPG_ITERATIVE_PASS }}
