@@ -33,7 +33,7 @@ jobs:
       id: create-pr
       uses: peter-evans/create-pull-request@v7
       with:
-        commit-message: dvc ${{ steps.latest.outputs.version }}
+        commit-message: updated dvc to ${{ steps.latest.outputs.version }}
         title: dvc ${{ steps.latest.outputs.version }}
         # token: ${{ secrets.OLIVAW_PAT }}
         # author: Iterative Olivaw <support@iterative.ai>

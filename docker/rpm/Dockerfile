@@ -1,5 +1,5 @@
-ARG PYTHON_VERSION=3.12.7
-ARG RUBY_VERSION=3.4.5
+ARG PYTHON_VERSION=3.14
+ARG RUBY_VERSION=3.4.7
 
 FROM fedora:41 as pyenv
 ARG PYTHON_VERSION
@@ -29,10 +29,11 @@ RUN curl https://pyenv.run | bash
 ENV PYENV_ROOT="/root/.pyenv"
 ENV PATH="$PYENV_ROOT/shims:$PYENV_ROOT/bin:$PATH"
 
-RUN PYTHON_CONFIGURE_OPTS="--enable-shared" ~/.pyenv/bin/pyenv install ${PYTHON_VERSION}
+RUN PYTHON_CONFIGURE_OPTS="--enable-shared" pyenv install ${PYTHON_VERSION}
 RUN pyenv global ${PYTHON_VERSION}
 
-RUN test "${PYTHON_VERSION}" = "$(python --version | awk '{print $2}')"
+# make sure we're using the correct python version
+RUN python --version | grep ${PYTHON_VERSION}
 
 FROM pyenv as rbenv
 ARG RUBY_VERSION
