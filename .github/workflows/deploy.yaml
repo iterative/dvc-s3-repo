@@ -26,11 +26,11 @@ jobs:
       packages: write
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v6
+    - uses: actions/checkout@v7
     - name: Read DVC version
       run: echo "DVC_VERSION=$(<dvc_version.txt)" >> "$GITHUB_ENV"
     - name: Checkout specific version of dvc
-      uses: actions/checkout@v6
+      uses: actions/checkout@v7
       with:
           repository: treeverse/dvc
           ref: ${{ env.DVC_VERSION }}
